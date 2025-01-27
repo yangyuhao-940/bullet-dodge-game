@@ -20,14 +20,32 @@
         /* 游戏容器 */
         #gameContainer {
             position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 100%;
+            max-height: 600px;
         }
 
         /* 游戏画布 */
         #gameCanvas {
+            width: 100%;
+            height: 100%;
             border: 3px solid #34495e;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             background: #2c3e50;
+        }
+
+        /* 信息面板 */
+        #hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 1.2em;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 5px;
         }
 
         /* 游戏状态提示 */
@@ -45,17 +63,70 @@
             border-radius: 10px;
         }
 
-        /* 信息面板 */
-        #hud {
+        /* 道具按钮容器 */
+        #powerupButtons {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            color: white;
-            font-size: 1.2em;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 10px;
-            border-radius: 5px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
         }
+
+        /* 道具按钮样式 */
+        .powerupButton {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .powerupButton:disabled {
+            background: #7f8c8d;
+            cursor: not-allowed;
+        }
+        /* 添加爆炸效果动画 */
+@keyframes explode {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(3); opacity: 0; }
+}
+
+.explosion-effect {
+    position: absolute;
+    background: radial-gradient(circle, #f1c40f 10%, #e67e22 90%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    animation: explode 0.5s ease-out forwards;
+    pointer-events: none;
+}
+
+/* 摇杆样式 */
+#joystickContainer {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    touch-action: none;
+}
+
+#joystick {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    touch-action: none;
+}
     </style>
 </head>
 <body>
@@ -71,6 +142,18 @@
 
         <!-- 游戏状态提示 -->
         <div id="gameStatus"></div>
+
+        <!-- 道具按钮 -->
+        <div id="powerupButtons">
+            <button id="invisibilityButton" class="powerupButton">隐身(1)</button>
+            <button id="clearScreenButton" class="powerupButton">清屏(2)</button>
+            <button id="agilityButton" class="powerupButton">灵活(3)</button>
+        </div>
+
+        <!-- 摇杆 -->
+        <div id="joystickContainer">
+            <div id="joystick"></div>
+        </div>
     </div>
 
     <!-- 引入游戏逻辑 -->
